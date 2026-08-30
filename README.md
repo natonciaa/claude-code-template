@@ -1,0 +1,61 @@
+# Agentic Development Template
+
+A Claude Code template for building software with an LLM agent as the developer. Wiki-driven, spec + TDD, progressive disclosure.
+
+## Two ideas
+
+1. **The wiki is the spec.** `docs/wiki/` is the source of truth for what the project does and how it's built. Code that disagrees with the wiki is the bug.
+2. **Progressive disclosure beats specialized agents.** A single `developer` agent runs the whole TDD cycle, loading task-specific skills on demand. Skills are short, procedural, project-specific — never abstract explanations.
+
+## Quick start
+
+```bash
+git clone <this-template> my-project
+cd my-project
+rm -rf .git    # drop the template's history — /project:init re-inits git for your project
+claude
+```
+
+Inside Claude Code:
+
+```
+/project:init        # detect state, scaffold docs/wiki, base docs
+/project:interview   # grill yourself on requirements; populate the wiki
+/project:work        # pick the top todo, branch, run TDD (Red → Green → Refactor → wiki)
+/project:adversary   # point a read-only second model at the diff; findings only
+/project:review      # periodic audit in a fresh worktree
+/project:wiki-lint   # periodic wiki health check
+```
+
+Open `docs/wiki/` in Obsidian on the side. That's your view of the agent's knowledge.
+
+For a worked walkthrough — `/project:init` → `/project:interview` → `/project:work` end-to-end with explanations — see [`docs/getting-started.md`](docs/getting-started.md).
+
+## What's in the box
+
+```
+.claude/
+├── agents/          # planner (opus), developer, adversary (opus), reviewer, wiki-maintainer, researcher
+├── skills/          # process skills (TDD, branching, plan-writing, adversarial-review, wiki-update, …) + update-toolkit meta skill
+├── commands/        # /project:init, /project:interview, /project:work, /project:adversary, /project:review, /project:wiki-lint, /project:wiki-ingest, /project:agent-scout
+├── settings.json    # harness settings
+└── rules/           # behavioral constraints
+docs/
+├── raw/             # immutable source documents (interviews, articles, transcripts)
+└── wiki/            # LLM-owned knowledge base (entities, concepts, decisions, summaries, log, …)
+CLAUDE.md            # the schema — read first
+HUMAN.md             # the human's-eye view of how this works
+```
+
+## Philosophy
+
+- **Skills are how-to, not what-is.** No skill explains "what TDD is" — they explain "how this project does TDD."
+- **Spec → Test → Code.** Entity Behavior cases → failing tests → minimal implementation.
+- **Wiki ships with code.** Code edits and wiki edits happen in the same commit.
+- **A second model reads the diff.** Risky cycles get an `adversary` on Opus with none of the author's context, told to find what's wrong. It raises findings; it never fixes them. Every finding gets a written disposition.
+- **Human in the loop.** When the agent can't decide from the wiki, it stops and asks — never silently improvises.
+- **Dynamic config.** The `update-toolkit` meta skill lets the agent evolve its own agents, skills, and commands as the project grows.
+
+## License
+
+MIT — see [`LICENSE`](LICENSE). Use it. Fork it. Bend it.
