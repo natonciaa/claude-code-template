@@ -28,7 +28,7 @@ Cuando migres un conector HTTP de MuleSoft, el código de Spring Boot debe segui
 @RequiredArgsConstructor
 public class ClientHttpAdapter implements ExternalPort {
 
-    // Componente inyectado de la librería interna
+    // Componente inyectado de la librería REST interna
     private final CustomRestClient restClient; 
     private final MyLibraryConfig config;
 
